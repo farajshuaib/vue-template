@@ -9,12 +9,13 @@ import navigationGuards from "./core/middleware/navigationGuards";
 import Dashboard from "@/core/layout/Dashboard.vue";
 import authRoute from "@/modules/auth/router";
 import userRoute from "@/modules/users/router";
+import gallaryRoute from "@/modules/gallaries/router";
 
 export const dashboardRoutes: RouteRecordRaw = {
   path: "/",
   component: Dashboard,
   name: "Dashboard",
-  children: [userRoute],
+  children: [userRoute, gallaryRoute],
 };
 
 const router = createRouter({
@@ -25,3 +26,10 @@ const router = createRouter({
 router.beforeEach(navigationGuards);
 
 export default router;
+interface CreateGalleryDto {
+  title: string;
+  subTitle: string;
+  section: string;
+  description: string;
+  image: from[]
+}
