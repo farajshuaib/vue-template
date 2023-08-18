@@ -13,4 +13,12 @@ interface UpdateGalleryDto {
     description: string;
     images: FileList | null
 }
+interface ShowGalleryDto {
+    id: nubmer;
+    title: string;
+    subTitle: string;
+    section: string;
+    description: string;
+    images: FileList | null
+}
 

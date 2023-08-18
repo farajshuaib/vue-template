@@ -3,7 +3,7 @@
 
 
     <label for="title">Title</label>
-    <Field  name="title" type="text" />
+    <Field  v-model="state.title" name="title" type="text" />
     <ErrorMessage name="title" />
 
     <label for="subTitle">subTitle</label>
@@ -35,17 +35,18 @@ import { reactive } from "vue";
 
 
  let state = reactive<CreateGalleryDto>({
-    title: "",
-    subTitle: "",
-    section: "",
-    description: "",
+    title: "adf",
+    subTitle: "adf",
+    section: "sdf",
+    description: "sdfdf",
     images: null,
   });
 const store = galleriesStore();
 const submit = ()=> {
+  
   console.log("sdfsdf");
   
- store.createGallery();
+ store.createGallery(state);
 }
 function onFileChanged($event: Event) {
   const target = $event.target as HTMLInputElement;

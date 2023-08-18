@@ -2,65 +2,102 @@ import { defineStore } from "pinia";
 import { computed, nextTick, reactive, ref } from "vue";
 import { useToast } from "vue-toastification";
 import GalleriesService from "../repository";
+import { START_LOCATION } from "vue-router";
+// import GalleriesService from "../repository";
 
 export const galleriesStore = defineStore("useGalleries", () => {
   const userService = new GalleriesService();
 
   const toast = useToast();
 
-  let state = reactive<UpdateGalleryDto>({
+  const state = reactive<{data:UpdateGalleryDto}>({
+    data:{
+
     id: 0,
     title: "",
     subTitle: "",
     section: "",
     description: "",
     images: null,
-  });
+  }});
 
   const setFiles = (files: FileList) => {
-    state.images = files;
+    state.data.images = files;
   };
-  const createGallery = async () => {
+  const createGallery = async (newState: CreateGalleryDto) => {
     try {
+      console.log("test");
+      
+      console.log(state.data);
+      state.data.description = newState.description;
+      state.data.section = newState.section;
+      state.data.subTitle = newState.subTitle;
+      state.data.title = newState.title;
+      
+      
       var client = new GalleriesService();
 
-      console.log("i am here");
-
+      
       const formData = new FormData();
-      if (!state.images) return toast.error("no images brooo");
-
-      Array.from(state.images).forEach((file, index) => {
-        formData.append(`images[${index}]`, file);
+      if (!state.data.images) return toast.error("no images brooo");
+      
+      console.log(state.data.images);
+      // formData.append(`Attachments`, JSON.stringify(state.data.images));
+      Array.from(state.data.images).forEach((file, index) => {
+        formData.append(`Attachments`, file);
       });
 
-      formData.append("title", state.title);
-      formData.append("description", state.description);
-      formData.append("section", state.section);
-      formData.append("subTitle", state.subTitle);
+      // for (const image of this.images) {
+      //   formData.append("attachments[]", image);
+      // }
 
-      const { data } = await client.createGallery(formData, {
+
+      console.log(state);
+      
+      formData.append("Title", state.data.title);
+      formData.append("Description", state.data.description);
+      formData.append("Section", state.data.section);
+      formData.append("SubTitle", state.data.subTitle);
+
+      console.log(formData.values);
+      
+      const { data } = await client.createGallery(formData
+        
+        , {
         headers: {
+          Accept: "text/plain",
+
           "Content-Type": "multipart/form-data",
         },
-      });
+      }
+      
+      );
       console.log(data);
     } catch (e) {
       console.log(e);
     }
   };
-
+  const getFormData = (object:any) => Object.entries(object)
+  .reduce((fd, [ key, val ]) => {
+    if (Array.isArray(val)) {
+      val.forEach(v => fd.append(key, v))
+    } else {
+      fd.append(key, val)
+    }
+    return fd
+  }, new FormData());
   const getGallery = async (id: string) => {
     try {
       var client = new GalleriesService();
 
       const { data: ResponseData } = await client.getGallery({}, id);
       const res = { ...ResponseData.data };
-      state.id = res.id;
-      state.title = res.title;
-      state.description = res.description;
-      state.section = res.section;
-      state.subTitle = res.subTitle;
-      state.images = res.images;
+      state.data.id = res.id;
+      state.data.title = res.title;
+      state.data.description = res.description;
+      state.data.section = res.section;
+      state.data.subTitle = res.subTitle;
+      state.data.images = res.images;
 
       return res;
 
@@ -73,15 +110,33 @@ export const galleriesStore = defineStore("useGalleries", () => {
 
     const {data} = await client.updateGallery({
       data : state
-    }, state.id)
-
+    }, state.data.id)
   } 
+  const showGalleries = async (): Promise<ShowGalleryDto[]>=> {
+
+    try {
+      const toast = useToast()
+
+      const client = new GalleriesService();
+
+      const {data} = await client.getGallaries({
+      });
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      toast.error("error in store 91")
+      
+    }
+    return []
+  }
   return {
     state,
     setFiles,
     createGallery,
     getGallery,
-    updateGallery
+    updateGallery,
+    showGalleries
   };
 });
 

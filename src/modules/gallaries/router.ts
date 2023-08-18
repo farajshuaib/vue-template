@@ -23,7 +23,8 @@ const route: RouteRecordRaw = {
         allowedPermission: [],
         title: "List Gallaries"
       },      
-    },
+    }
+    ,
     {
       path: "create",
       name: "CreateGallery",
@@ -32,17 +33,28 @@ const route: RouteRecordRaw = {
         allowedPermission: [],
         title: "Create Gallaries"
       },
-    },
+    }
+    ,
+    // {
+    //   path: "update/:id",
+    //   name: "UpdateGallery",
+    //   // props: true,
+    //   component: () => import("@/modules/gallaries/screens/update.vue"),
+    //   meta: {
+    //     allowedPermission: [],
+    //     title: "update Gallaries"
+    //   },
+    // },
     {
-      path: "update/:id",
-      name: "UpdateGallery",
-      props: true,
-      component: () => import("@/modules/gallaries/screens/update.vue"),
+      path: "show",
+      name: "showAllGalleries",
+      // props: true,
+      component: () => import("@/modules/gallaries/screens/show.vue"),
       meta: {
         allowedPermission: [],
-        title: "update Gallaries"
+        title: "show All Galleries"
       },
-    },
+    }
   ],
 };
 

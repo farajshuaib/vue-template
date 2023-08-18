@@ -26,10 +26,3 @@ const router = createRouter({
 router.beforeEach(navigationGuards);
 
 export default router;
-interface CreateGalleryDto {
-  title: string;
-  subTitle: string;
-  section: string;
-  description: string;
-  image: from[]
-}

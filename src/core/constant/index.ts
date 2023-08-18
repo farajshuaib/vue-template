@@ -2,7 +2,7 @@ import type { FirebaseOptions } from "firebase/app";
 
 const APP_NAME: string = "";
 
-const API_BASE_URL: string = "";  
+const API_BASE_URL: string = "http://localhost:5030/Api/Public/";  
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: "",

@@ -48,7 +48,6 @@ let state = reactive<UpdateGalleryDto>({
 
 onMounted(() => {
     try {
-
         var res = store.getGallery(route.params.id as string)
         console.log(res);
 

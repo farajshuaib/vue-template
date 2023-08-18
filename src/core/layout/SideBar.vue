@@ -48,9 +48,12 @@
             class="overflow-hidden transition-all border-l-2 border-gray800 ms-5 duration-30"
           >
             <li
+
               v-for="(subroute, innerIndex) in route.children"
               :key="innerIndex"
             >
+            
+            
               <router-link
                 :to="{ name: subroute.name }"
                 class="flex items-center w-full px-4 py-3 text-gray-600"
