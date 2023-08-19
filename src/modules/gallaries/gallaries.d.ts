@@ -21,4 +21,15 @@ interface ShowGalleryDto {
     description: string;
     images: FileList | null
 }
+interface ShowGalleryRequestDto {
+    title?: string| null;
+    subTitle?: string| null;
+    dateTime?: DateTime| null;
+    description?: string| null;
+    dateTimeCondition: string;
+    pageNumber?: number | null;
+    pageSize?: number| null;
+    includeAttachments : boolean;
+}   
+
 

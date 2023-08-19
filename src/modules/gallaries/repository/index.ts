@@ -7,8 +7,8 @@ export default class GalleriesService {
     this.httpClient = useHttpClient();
   }
 
-  async getGallaries(config: AxiosRequestConfig) {
-    return await this.httpClient.get("/galleries", config);
+  async getGallaries(payload: any,config?: AxiosRequestConfig) {
+    return await this.httpClient.post("/Galleries/Search",payload, config);
   }
 
   async getGallery(config: AxiosRequestConfig, id: string) {

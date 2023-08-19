@@ -10,7 +10,7 @@ export const galleriesStore = defineStore("useGalleries", () => {
 
   const toast = useToast();
 
-  const state = reactive<{data:UpdateGalleryDto}>({
+  let state = reactive<{data:UpdateGalleryDto}>({
     data:{
 
     id: 0,
@@ -20,6 +20,9 @@ export const galleriesStore = defineStore("useGalleries", () => {
     description: "",
     images: null,
   }});
+
+  let stateList = reactive<ShowGalleryDto[]>([]);
+  
 
   const setFiles = (files: FileList) => {
     state.data.images = files;
@@ -47,12 +50,7 @@ export const galleriesStore = defineStore("useGalleries", () => {
         formData.append(`Attachments`, file);
       });
 
-      // for (const image of this.images) {
-      //   formData.append("attachments[]", image);
-      // }
-
-
-      console.log(state);
+          console.log(state);
       
       formData.append("Title", state.data.title);
       formData.append("Description", state.data.description);
@@ -77,15 +75,7 @@ export const galleriesStore = defineStore("useGalleries", () => {
       console.log(e);
     }
   };
-  const getFormData = (object:any) => Object.entries(object)
-  .reduce((fd, [ key, val ]) => {
-    if (Array.isArray(val)) {
-      val.forEach(v => fd.append(key, v))
-    } else {
-      fd.append(key, val)
-    }
-    return fd
-  }, new FormData());
+
   const getGallery = async (id: string) => {
     try {
       var client = new GalleriesService();
@@ -112,17 +102,19 @@ export const galleriesStore = defineStore("useGalleries", () => {
       data : state
     }, state.data.id)
   } 
-  const showGalleries = async (): Promise<ShowGalleryDto[]>=> {
+  const showGalleries = async (showGalleriesRequest: ShowGalleryRequestDto): Promise<ShowGalleryDto[]>=> {
 
     try {
       const toast = useToast()
 
       const client = new GalleriesService();
 
-      const {data} = await client.getGallaries({
-      });
+      const {data} = await client.getGallaries(showGalleriesRequest);
+      console.log(data);
+      stateList = data as ShowGalleryDto[]
+      
 
-      return data;
+      return await stateList;
     } catch (error) {
       console.log(error);
       toast.error("error in store 91")
